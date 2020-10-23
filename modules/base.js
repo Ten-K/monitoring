@@ -4,10 +4,10 @@ const os = require('os')
 function handleDiffOs(ctx, next, cb_win, cb_linux){
   if(os.platform() === 'linux'){
     //在linux环境下
-    cb_linux(ctx, next);
+    return cb_linux(ctx, next);
   }else{
     //在window环境下
-    cb_win(ctx, next);
+    return cb_win(ctx, next);
   }
 }
 

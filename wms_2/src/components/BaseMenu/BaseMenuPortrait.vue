@@ -162,7 +162,7 @@ export default {
 
 <style lang="less" scoped>
 @navWrapWidth:200px;//导航条整个宽度
-@themeColor: #27303f;//导航条背景色
+@themeColor: #f5f5f5;//导航条背景色
 @themeActiveColor:#344157;//导航条当前选中背景色
 @themeHoverColor:#344157;//导航条hover背景色
 @fontColor:#ffffff;//导航条字体颜色

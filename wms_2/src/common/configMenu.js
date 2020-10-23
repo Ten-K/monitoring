@@ -14,6 +14,16 @@ const menu = [
     value: 'severityLevel',
     icon: 'el-icon-menu',
     code: 'SEVERITYLEVEL',
+  },{
+    label: '软件列表测试',
+    value: 'softwareList',
+    icon: 'el-icon-menu',
+    code: 'SOFTWARELIST',
+  },{
+    label: '进程列表测试',
+    value: 'processList',
+    icon: 'el-icon-menu',
+    code: 'PROCESSLIST',
   },
 ]
 

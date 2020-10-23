@@ -40,6 +40,18 @@ class ActionsLogModel {
             truncate: true 
         }) 
     }
+
+    //根据id查询最新数据
+    static async getActionsLogOne(pid){
+        return await ActionsLog.findOne({
+            order: [
+                ['id', 'DESC']
+            ],
+            where:{
+                pid
+            }
+        })
+    }
 }
 
 module.exports = ActionsLogModel

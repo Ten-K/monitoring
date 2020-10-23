@@ -16,8 +16,15 @@ let apiArr = [
   'api/severityLevel/create', // 创建严重等级
   'api/severityLevel/get', // 获取严重等级
   'api/severityLevel/del', // 删除严重等级
+  'api/v1/actionsLog/functionHook32',//调用dll开启程序监听接口
+  'api/v1/actionsLog/FunctionHookRemoveHelper32',//调用dll关闭程序监听接口
 
-
+  'api/fileOperation/rootList', // 根目录列表
+  'api/fileOperation/fileList', // 文件列表
+  'api/fileOperation/softwareList',//软件列表
+  'api/fileOperation/processList',//软件列表
+  'api/fileOperation/openSoftware',//启动软件
+  'api/softwareDetail/get', //获取软件详情
 ]
 
 const exportObj = {}

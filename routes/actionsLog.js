@@ -17,10 +17,13 @@ const router = new Router({
 /**
  * 路由接口
  */
-//调用ddl文件接口
-router.get('/article/ffiNapi',ActionsLogController.ffiNapi)
+//调用dll开启程序监听接口
+router.post('/actionsLog/functionHook32',ActionsLogController.functionHook32)
+//调用dll关闭程序监听接口
+router.post('/actionsLog/FunctionHookRemoveHelper32',ActionsLogController.FunctionHookRemoveHelper32)
+
 //批量创建
-router.get('/actionsLog/create', ActionsLogController.create);
+router.post('/actionsLog/create', ActionsLogController.create);
 //查询所有数据
 router.get('/actionsLog/listAll', ActionsLogController.listAll);
 //删除所有数据（慎用）

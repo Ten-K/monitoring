@@ -11,6 +11,7 @@ const test = require('./routes/test')
 const osData = require('./routes/osData')
 const actionsLog = require('./routes/actionsLog')
 const severityLevel = require('./routes/severityLevel')
+const fileOperation = require('./routes/fileOperation')
 
 // error handler
 onerror(app)
@@ -38,6 +39,7 @@ app.use(test.routes(), test.allowedMethods())
 app.use(osData.routes(), osData.allowedMethods())
 app.use(actionsLog.routes(), actionsLog.allowedMethods())
 app.use(severityLevel.routes(), severityLevel.allowedMethods())
+app.use(fileOperation.routes(),fileOperation.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

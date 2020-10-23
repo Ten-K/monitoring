@@ -16,6 +16,7 @@
 
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible">
       <BaseFormCom 
+        v-if="dialogVisible"
         ref="severityLevelBFC"
         :labels="formLabels" 
         :handleCompleteData="handleCompleteData"
@@ -72,7 +73,7 @@ export default {
         url: this.$api.apiSeverityLevelGet,
         method: 'GET',
       }).then((r) => {
-        if (r.code === 0) {
+        if (r.code === '0') {
           this.dataList = r.data;
         }
       })
@@ -88,7 +89,7 @@ export default {
         method: 'POST',
         data
       }).then((r) => {
-        if (r.code === 0) {
+        if (r.code === '0') {
           this.dialogVisible = false;
           this.getList();
         }
@@ -109,7 +110,7 @@ export default {
             id: data.scope.row.id
           }
         }).then((r) => {
-          if (r.code === 0) {
+          if (r.code === '0') {
             this.dialogVisible = false;
             this.getList();
           }

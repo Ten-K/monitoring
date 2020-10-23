@@ -28,6 +28,14 @@ export default new Router({
         path: '/severityLevel',
         component: () => import('@/views/severityLevel'),
         name: 'severityLevel'
+      },{
+        path:'/softwareList',
+        component:()=>import('@/views/softwareList'),
+        name:'softwareList'
+      },{
+        path:'/processList',
+        component:()=>import('@/views/processList'),
+        name:'processList'
       }]
     }
   ]

@@ -4,26 +4,40 @@ const path = require('path');
 
 const ffi = require('ffi-napi');
 const fs = require('fs')
+const os = require('os')
 
 const exec = childProcess.exec
 
 class ActionsLogController {
     //批量创建
     static async create(ctx) {
+        let pid=ctx.request.body.pid
         try {
-            let pid = 13772;
+            let data;
             let arr = []
-            let con = fs.readFileSync('C:/Users/zhouz/Documents/WinMonitor/' + pid + '/actions.log', 'utf-8');
-            con = con.split("\n")
-            for (let key in con) {
-                if (key < con.length - 1) {
+            let filePath = os.homedir().replace(/\\/g,'/')+'/Documents/WinMonitor/' + pid + '/actions.log'
+            let folderPath = os.homedir().replace(/\\/g,'/')+'/Documents/WinMonitor/' + pid
+            let newData = await ActionsLogModel.getActionsLogOne(pid) || '';
+            if (fs.existsSync(folderPath) && fs.existsSync(filePath)) {
+                let con = fs.readFileSync(filePath, 'utf-8');
+
+                //倒叙后移除第一个空值
+                con = con.split("\n").reverse()
+                con.splice(0,1)
+
+                for (let key in con) {
                     con[key] = JSON.parse(con[key])
                     con[key]['pid'] = pid
-                    // 创建文章模型
-                    arr.push(con[key])
+                    //判断是否是最新插入数据时间，是：退出循环
+                    if(newData.timestamp == con[key]['timestamp']){
+                        break;
+                    }
+                    arr.unshift(con[key])
                 }
+                data = await ActionsLogModel.createActionsLog(arr);
+            } else {
+                data = '尚未监控程序或没有新的数据更新'
             }
-            let data = await ActionsLogModel.createActionsLog(arr);
 
             ctx.response.status = 200;
             ctx.body = {
@@ -60,7 +74,7 @@ class ActionsLogController {
             ctx.body = {
                 code: 412,
                 msg: '查询失败',
-                data:err
+                data: err
             }
         }
     }
@@ -81,50 +95,69 @@ class ActionsLogController {
             ctx.body = {
                 code: 412,
                 msg: '查询失败',
-                data:err
+                data: err
             }
         }
     }
 
-    //调用dll文件
-    static async ffiNapi(ctx) {
+    //调用dll开启程序监听接口
+    static async functionHook32(ctx) {
+        let pid = ctx.request.body.pid
         try {
             let data;
-            let pid = 13772;
-            const ffipath = path.join(__dirname, '../dll/DllInjectHelperDll.dll')
-            const DllInjectHelperDll = new ffi.Library(ffipath, {
+            const DHDpath = path.join(__dirname, '../dll/DllInjectHelperDll.dll')
+            const FHpath = path.join(__dirname, '../dll/FunctionHook32.dll')
+            const DllInjectHelperDll = new ffi.Library(DHDpath, {
                 'InjectDll': ['int', ['int', 'string']]
             });
-            let code = DllInjectHelperDll.InjectDll(pid, 'D:/privateCode/koa2/koa2_demo/dll/FunctionHookRemoveHelper32.dll')
+            let code = DllInjectHelperDll.InjectDll(pid,FHpath)
             if (code === 1) {
-                data = fs.readFileSync('C:/Users/zhouz/Documents/WinMonitor/' + pid + '/actions.log', 'utf-8');
-                data = data.split("\n")
-                for (let key in data) {
-                    if (key < data.length - 1) {
-                        data[key] = JSON.parse(data[key])
-                    }
-                }
+                data = "监听成功，正在监听当前pid程序"
             } else {
                 data = "监听失败，检查监听的程序是否是32位"
             }
             ctx.response.status = 200;
-            ctx.body = {
-                code: 200,
-                msg: '查询成功',
-                data: {
-                    data
-                }
+            ctx.response.body={
+                code:code==1?'0':'1013',
+                message:data
             }
-
         } catch (err) {
             ctx.response.status = 412;
-            ctx.body = {
-                code: 412,
-                msg: '查询失败',
-                data: err
+            ctx.response.body = {
+                code: '412',
+                message: '系统异常'
             }
         }
+    }
 
+    //调用dll关闭程序监听接口
+    static async FunctionHookRemoveHelper32(ctx) {
+        let pid = ctx.request.body.pid
+        try {
+            let data;
+            const DHDpath = path.join(__dirname, '../dll/DllInjectHelperDll.dll')
+            const FHRpath = path.join(__dirname, '../dll/FunctionHookRemoveHelper32.dll')
+            const DllInjectHelperDll = new ffi.Library(DHDpath, {
+                'InjectDll': ['int', ['int', 'string']]
+            });
+            let code = DllInjectHelperDll.InjectDll(pid,FHRpath)
+            if (code === 1) {
+                data = "关闭成功"
+            } else {
+                data = "关闭失败，检查关闭的程序是否是32位"
+            }
+            ctx.response.status = 200;
+            ctx.response.body={
+                code:code==1?'0':'1014',
+                message:data
+            }
+        } catch (err) {
+            ctx.response.status = 412;
+            ctx.response.body = {
+                code: '412',
+                message: '查询失败',
+            }
+        }
     }
 }
 

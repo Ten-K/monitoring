@@ -24,8 +24,8 @@ function getOsData(ctx, next){
   data['platform'] = os.platform();//平台
   data['ip'] = getIp();//ip
 
-  ctx.body = {
-    code: 0,
+  ctx.response.body = {
+    code: '0',
     data
   };
 }
@@ -37,14 +37,14 @@ let testDiffOs = function(ctx, next){
   return base.handleDiffOs(ctx, next, testDiffOs_window, testDiffOs_linux)
 }
 function testDiffOs_linux(ctx, next){
-  ctx.body = {
-    code: 0,
+  ctx.response.body = {
+    code: '0',
     message: 'linux'
   };
 }
 function testDiffOs_window(ctx, next){
-  ctx.body = {
-    code: 0,
+  ctx.response.body = {
+    code: '0',
     message: 'window'
   };
 }

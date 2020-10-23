@@ -13,7 +13,14 @@
       </div>
     </div>
     <div class="index-container">
-      <div class="menu">
+      <BaseMenuPortrait 
+        :menuData='menu' 
+        :permissionsArray='permissionsArr' 
+        menuType='el-menu'
+        :elMenuStyle="{backgroundColor:'#f5f5f5',textColor:'#333',activeTextColor:'#d73131'}">
+      </BaseMenuPortrait>
+
+      <!-- <div class="menu">
         <el-menu
           router
           background-color="#f5f5f5"
@@ -57,8 +64,15 @@
             </el-menu-item>
           </template>
         </el-menu>
-      </div>
+      </div> -->
       <div class="content">
+        <span @click="dialogVisible=true">打开文件</span>
+        <BaseFileList 
+          title="选择程序" 
+          :visible.sync="dialogVisible" 
+          @ensure='ensure' 
+          @cancel='dialogVisible=false'>
+        </BaseFileList>
         <router-view/>
       </div>
     </div>
@@ -75,17 +89,27 @@ export default {
     return {
       menu: [ ...menu ],
       permissionsArr: [
-        'INDEX', 'TEST', 'SEVERITYLEVEL'
-      ]
+        'INDEX', 
+        'TEST', 
+        'SEVERITYLEVEL', 
+        'SOFTWARELIST',
+        'SEVERITYLEVEL',
+        'PROCESSLIST'
+      ],
+      dialogVisible:false,
     }
   },
   created () {
     self = this
-    self.getIdentity()
+    // self.getIdentity()
   },
   mounted () {
   },
   methods: {
+    ensure(item){
+      console.log(item);
+      this.dialogVisible=false
+    },
     logout () {
       self.$confirm('是否确认退出登录')
         .then(() => {
