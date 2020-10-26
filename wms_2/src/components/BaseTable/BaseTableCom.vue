@@ -318,6 +318,10 @@ export default {
     getCellWord(data, columnConfig){
       if(columnConfig.type === 'select' || columnConfig.type === 'radio' || columnConfig.type === 'switch'){
         return this.$utils.funcData.isNullOrUndefined(data.row[columnConfig.prop]) ? '--' : this.$utils.funcData.getLabelFromArr(columnConfig.options, data.row[columnConfig.prop])
+      }else if(columnConfig.type === 'timestamp'){
+        let date = new Date(data.row[columnConfig.prop]);
+        date = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+        return this.$utils.funcData.isNullOrUndefined(data.row[columnConfig.prop]) ? '--' : date;
       }else{
         return this.$utils.funcData.isNullOrUndefined(data.row[columnConfig.prop]) ? '--' : data.row[columnConfig.prop]
       }

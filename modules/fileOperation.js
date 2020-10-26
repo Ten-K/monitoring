@@ -3,6 +3,7 @@ const iconv=require('iconv-lite')
 const { join, resolve } = require('path')
 const fs = require('fs')
 const os = require('os')
+const ffi = require('ffi-napi');
 
 const base = require('./base')
 const { chdir } = require('process')
@@ -119,6 +120,7 @@ function getSoftwareDetailList_window(data){
             let iconPath= join(os.tmpdir(), 'ProcessIcon', `${dict.LegalName}.png`);
             dict.Icon=fs.readFileSync(iconPath.replace(/\\/g,"/"),'binary')
           }catch(err){
+            console.log(err);
             dict.Icon=null
           }
           applist.push(dict);
@@ -167,6 +169,28 @@ function getProcessList_window(data){
     })
   })
 }
+//启动并监控指定程序 window
+function openSoftwareAction_window(data){
+  return new Promise((resolve,reject)=>{
+    if(!data.path.endsWith('.exe')){
+      reject('请选择正确的exe文件')
+    }
+    try {
+        const DHDpath = join(__dirname, '../dll/FunctionHookLoader32.dll')
+        const FunctionHookLoader32 = new ffi.Library(DHDpath, {
+            'StartProcessWithHooksA': ['int', ['string']]
+        });
+        let code = FunctionHookLoader32.StartProcessWithHooksA(data.path)
+        if (code === 0) {
+            resolve("启动成功")
+        } else {
+            reject("启动失败，检查启动的程序是否是32位")
+        }
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
 
 /* linux操作 TODO: */
 // 获取系统根目录 linux
@@ -179,6 +203,8 @@ function getSoftwareDetailList_linux(data){}
 function openSoftware_linux(data){}
 //当前的进程列表 linux
 function getProcessList_linux(data){}
+//启动并监控指定程序 linux
+function openSoftwareAction_linux(data){}
 
 
 
@@ -202,11 +228,15 @@ let openSoftware=function(ctx,next){
 let getProcessList=function(ctx,next){
   return base.handleDiffOs(ctx,next,getProcessList_window,getProcessList_linux)
 }
-
+//启动并监控指定程序
+let openSoftwareAction=function(ctx,next){
+  return base.handleDiffOs(ctx,next,openSoftwareAction_window,openSoftwareAction_linux)
+}
 module.exports = {
   getSystemDiskInfo,
   getAppointPathFileDetailList,
   getSoftwareDetailList,
   openSoftware,
-  getProcessList
+  getProcessList,
+  openSoftwareAction
 }

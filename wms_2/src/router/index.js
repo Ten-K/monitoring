@@ -36,6 +36,10 @@ export default new Router({
         path:'/processList',
         component:()=>import('@/views/processList'),
         name:'processList'
+      },{
+        path:'/softwareDetail/:exeName',
+        component:()=>import('@/views/softwareDetail'),
+        name:'softwareDetail'
       }]
     }
   ]

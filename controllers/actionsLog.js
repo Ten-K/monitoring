@@ -105,20 +105,19 @@ class ActionsLogController {
         let pid = ctx.request.body.pid
         try {
             let data;
-            const DHDpath = path.join(__dirname, '../dll/DllInjectHelperDll.dll')
-            const FHpath = path.join(__dirname, '../dll/FunctionHook32.dll')
-            const DllInjectHelperDll = new ffi.Library(DHDpath, {
-                'InjectDll': ['int', ['int', 'string']]
+            const DHDpath = path.join(__dirname, '../dll/FunctionHookLoader32.dll')
+            const FunctionHookLoader32 = new ffi.Library(DHDpath, {
+                'AttachAndInjectHooks': ['int', ['int']]
             });
-            let code = DllInjectHelperDll.InjectDll(pid,FHpath)
-            if (code === 1) {
+            let code = FunctionHookLoader32.AttachAndInjectHooks(pid)
+            if (code === 0) {
                 data = "监听成功，正在监听当前pid程序"
             } else {
                 data = "监听失败，检查监听的程序是否是32位"
             }
             ctx.response.status = 200;
             ctx.response.body={
-                code:code==1?'0':'1013',
+                code:code==0?'0':'1013',
                 message:data
             }
         } catch (err) {
@@ -135,20 +134,19 @@ class ActionsLogController {
         let pid = ctx.request.body.pid
         try {
             let data;
-            const DHDpath = path.join(__dirname, '../dll/DllInjectHelperDll.dll')
-            const FHRpath = path.join(__dirname, '../dll/FunctionHookRemoveHelper32.dll')
-            const DllInjectHelperDll = new ffi.Library(DHDpath, {
-                'InjectDll': ['int', ['int', 'string']]
+            const DHDpath = path.join(__dirname, '../dll/FunctionHookLoader32.dll')
+            const FunctionHookLoader32 = new ffi.Library(DHDpath, {
+                'RemoveHooks': ['int', ['int']]
             });
-            let code = DllInjectHelperDll.InjectDll(pid,FHRpath)
-            if (code === 1) {
+            let code = FunctionHookLoader32.RemoveHooks(pid)
+            if (code === 0) {
                 data = "关闭成功"
             } else {
                 data = "关闭失败，检查关闭的程序是否是32位"
             }
             ctx.response.status = 200;
             ctx.response.body={
-                code:code==1?'0':'1014',
+                code:code==0?'0':'1014',
                 message:data
             }
         } catch (err) {

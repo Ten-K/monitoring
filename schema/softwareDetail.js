@@ -1,90 +1,145 @@
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('actionsLog', {
+    return sequelize.define('softwareDetail', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
             autoIncrement: true,
         },
+        pid: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            field: 'pid',
+        },
         name: {
-            type: DataTypes.STRING(150),
+            type: DataTypes.STRING(350),
             allowNull: true,
             field: 'name',
+        },
+        exePath: {
+            type: DataTypes.STRING(350),
+            allowNull: true,
+            field: 'exePath',
         },
         type: {
             type: DataTypes.INTEGER,
             allowNull: true,
             field: 'type',
         },
-        time: {
+        timestamp: {
             type: DataTypes.DATE,
             allowNull: true,
-            field: 'time',
+            field: 'timestamp',
         },
-        file_name: {
+        fileName: {
             type: DataTypes.STRING(100),
             allowNull: true,
-            field: 'file_name',
+            field: 'fileName',
         },
-        file_location: {
+        fileLocation: {
             type: DataTypes.STRING(350),
             allowNull: true,
-            field: 'file_location',
+            field: 'fileLocation',
         },
-        read_and_write_type: {
+        readAndWriteType: {
             type: DataTypes.STRING(50),
             allowNull: true,
-            field: 'read_and_write_type',
+            field: 'readAndWriteType',
         },
-        document_sensitivity: {
+        documentSensitivity: {
             type: DataTypes.STRING(50),
             allowNull: true,
-            field: 'document_sensitivity',
+            field: 'documentSensitivity',
         },
-        call_process_parameters: {
+        callProcessParameters: {
             type: DataTypes.STRING(450),
             allowNull: true,
-            field: 'call_process_parameters'
+            field: 'callProcessParameters'
         },
-        target_ip: {
+        targetIp: {
             type: DataTypes.STRING(50),
             allowNull: true,
-            field: 'target_ip'
+            field: 'targetIp'
         },
-        agreement_type: {
+        protocol: {
             type: DataTypes.STRING(50),
             allowNull: true,
-            field: 'agreement_type'
+            field: 'protocol'
         },
-        sensitive_data_field: {
+        sensitiveDataField: {
             type: DataTypes.STRING(500),
             allowNull: true,
-            field: 'sensitive_data_field'
+            field: 'sensitiveDataField'
         },
-        network_traffic: {
+        bytes: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            field: 'network_traffic'
+            field: 'bytes'
         },
         port: {
             type: DataTypes.INTEGER,
             allowNull: true,
             field: 'port'
         },
-        socketFd: {
+        fd: {
             type: DataTypes.INTEGER,
             allowNull: true,
-            field: 'socketFd'
+            field: 'fd'
         },
-        with_attachment: {
+        withAttachment: {
             type: DataTypes.BOOLEAN,
             allowNull: true,
-            field: 'with_attachment'
+            field: 'withAttachment'
         },
         uuid: {
             type: DataTypes.STRING(100),
             allowNull: true,
             field: 'uuid'
+        },
+        access: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            field: 'access'
+        },
+        path: {
+            type: DataTypes.STRING(300),
+            allowNull: true,
+            field: 'path'
+        },
+        key: {
+            type: DataTypes.STRING(300),
+            allowNull: true,
+            field: 'key'
+        },
+        parent: {
+            type: DataTypes.STRING(300),
+            allowNull: true,
+            field: 'parent'
+        },
+        valueType: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+            field: 'valueType'
+        },
+        valueName: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+            field: 'valueName'
+        },
+        oldData: {
+            type: DataTypes.STRING(300),
+            allowNull: true,
+            field: 'oldData'
+        },
+        data: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+            field: 'data'
+        },
+        cmdLine: {
+            type: DataTypes.STRING(100),
+            allowNull: true,
+            field: 'cmdLine'
         },
     }, {
         // 如果为 true 则表的名称和 model 相同，即 user

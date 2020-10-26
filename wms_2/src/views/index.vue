@@ -107,8 +107,28 @@ export default {
   },
   methods: {
     ensure(item){
-      console.log(item);
-      this.dialogVisible=false
+      if(!item.isDirectory){
+        self.$http({
+          url:self.$api.apiFileOperationOpenSoftwareAction,
+          method:'POST',
+          data:{
+            path:item.path
+          }
+        }).then((r)=>{
+          if(r.code==='0'){
+            self.$notify({
+              message:'启动并监控程序成功',
+              type:'success'
+            })
+            self.dialogVisible=false
+          }
+        })
+      }else{
+        self.$notify({
+          message: '当前选中内容为文件夹，请重新选择',
+          type: 'warning'
+        })
+      }
     },
     logout () {
       self.$confirm('是否确认退出登录')

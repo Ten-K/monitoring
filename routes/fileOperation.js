@@ -17,7 +17,10 @@ router.post('/softwareList',fileOperation.getSoftwareList)
 // 启动指定路径的软件
 router.post('/openSoftware',fileOperation.openSoftware)
 
-//获取当前正在执行的进程列表
+// 获取当前正在执行的进程列表
 router.post('/processList',fileOperation.getProcessList)
+
+// 启动并监控指定路径的软件
+router.post('/openSoftwareAction',fileOperation.openSoftwareAction)
 
 module.exports = router

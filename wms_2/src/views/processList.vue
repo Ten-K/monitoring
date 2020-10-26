@@ -15,6 +15,7 @@
       <div class="softwareDetails">
         <el-button size='mini' type='primary' @click="start(item.processId)">执行监听</el-button>
         <el-button size='mini' style="margin-left:20px" @click="cancel(item.processId)">取消监听</el-button>
+        <el-button size='mini' style="margin-left:20px" @click="goDetail(item)">查看详情</el-button>
       </div>
     </div>
   </div>
@@ -70,6 +71,9 @@ export default {
           })
         }
       })
+    },
+    goDetail(data){
+      this.$router.push({path: `/softwareDetail/${data.processName}`})
     }
   }
 }

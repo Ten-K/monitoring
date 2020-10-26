@@ -24,7 +24,13 @@ let apiArr = [
   'api/fileOperation/softwareList',//软件列表
   'api/fileOperation/processList',//软件列表
   'api/fileOperation/openSoftware',//启动软件
+  'api/fileOperation/openSoftwareAction',//启动软件并监控
   'api/softwareDetail/get', //获取软件详情
+  'api/dbData/updateDBData', //更新数据库数据
+  'api/dbData/delDBData', //删除数据库数据
+  'api/dbData/getDBDataAll', //获取数据库数据
+  'api/softwareDetail/list', //获取详情
+  'api/file/download', //下载文件
 ]
 
 const exportObj = {}

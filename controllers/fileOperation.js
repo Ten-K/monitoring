@@ -78,10 +78,27 @@ async function getProcessList(ctx,next){
     }
   })
 }
+
+// 启动并监控指定路径的软件
+async function openSoftwareAction(ctx,next){
+  const rb=ctx.request.body
+  await fileOperation.openSoftwareAction(rb).then(data=>{
+    ctx.response.body={
+      code:'0',
+      message:data
+    }
+  }).catch(err=>{
+    ctx.response.body={
+      code:'1001',
+      message:err
+    }
+  })
+}
 module.exports = {
   getRoot,
   getFileList,
   getSoftwareList,
   openSoftware,
-  getProcessList
+  getProcessList,
+  openSoftwareAction
 }
